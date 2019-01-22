@@ -104,11 +104,22 @@
 		      gpio = <&pio 3 6 GPIO_ACTIVE_HIGH>;
 	};
 
+	cpu_power: cpu-power {
+		      compatible = "regulator-fixed";
+		      regulator-name = "cpu-power";
+		      regulator-min-microvolt = <1400000>;
+		      regulator-max-microvolt = <1400000>;
+	};
+
 	wifi_pwrseq: wifi_pwrseq {
 		compatible = "mmc-pwrseq-simple";
 		pinctrl-names = "default";
 		reset-gpios = <&r_pio 0 7 GPIO_ACTIVE_LOW>; /* PL7 */
 	};
+};
+
+&cpu0 {
+	cpu-supply = <&cpu_power>;
 };
 
 &de {
