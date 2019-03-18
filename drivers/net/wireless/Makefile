@@ -4,6 +4,7 @@
 #
 
 obj-$(CONFIG_WLAN_VENDOR_ADMTEK) += admtek/
+obj-$(CONFIG_RTL8189ES) += rtl8189es/
 obj-$(CONFIG_WLAN_VENDOR_ATH) += ath/
 obj-$(CONFIG_RTL8188EU) += rtl8188eu/
 obj-$(CONFIG_WLAN_VENDOR_ATMEL) += atmel/
