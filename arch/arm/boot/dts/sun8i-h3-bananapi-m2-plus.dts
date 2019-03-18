@@ -234,3 +234,8 @@
 	/* USB host VBUS is on as long as VCC-IO is on */
 	status = "okay";
 };
+
+&wifi_pwrseq {
+		clocks = <&rtc 1>;
+		clock-names = "ext_clock";
+};
