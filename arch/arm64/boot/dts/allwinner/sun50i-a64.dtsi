@@ -139,6 +139,7 @@
 			clock-names = "cpu";
 			operating-points-v2 = <&cpu0_opp_table>;
 			#cooling-cells = <2>;
+			next-level-cache = <&L2>;
 		};
 
 		cpu1: cpu@1 {
@@ -147,6 +148,7 @@
 			reg = <1>;
 			enable-method = "psci";
 			operating-points-v2 = <&cpu0_opp_table>;
+			next-level-cache = <&L2>;
 		};
 
 		cpu2: cpu@2 {
@@ -155,6 +157,7 @@
 			reg = <2>;
 			enable-method = "psci";
 			operating-points-v2 = <&cpu0_opp_table>;
+			next-level-cache = <&L2>;
 		};
 
 		cpu3: cpu@3 {
@@ -163,7 +166,13 @@
 			reg = <3>;
 			enable-method = "psci";
 			operating-points-v2 = <&cpu0_opp_table>;
+			next-level-cache = <&L2>;
 		};
+		
+		L2: l2-cache {
+			compatible = "cache";
+			cache-level = <2>;
+ 		};
 	};
 
 	de: display-engine {
