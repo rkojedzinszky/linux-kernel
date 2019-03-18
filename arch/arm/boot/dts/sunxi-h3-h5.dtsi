@@ -97,6 +97,13 @@
 			clock-output-names = "osc32k";
 		};
 
+		ext_osc32k: ext_osc32k_clk {
+			#clock-cells = <0>;
+			compatible = "fixed-clock";
+			clock-frequency = <32768>;
+			clock-output-names = "ext_osc32k";
+		};
+
 		iosc: internal-osc-clk {
 			#clock-cells = <0>;
 			compatible = "fixed-clock";
@@ -934,6 +941,9 @@
 			reg = <0x01f00000 0x54>;
 			interrupts = <GIC_SPI 40 IRQ_TYPE_LEVEL_HIGH>,
 				     <GIC_SPI 41 IRQ_TYPE_LEVEL_HIGH>;
+			clock-output-names = "rtc-osc32k", "rtc-osc32k-out";
+			clocks = <&ext_osc32k>;
+			#clock-cells = <1>;
 		};
 
 		r_ccu: clock@1f01400 {
