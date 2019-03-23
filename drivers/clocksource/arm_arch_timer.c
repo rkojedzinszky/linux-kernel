@@ -319,33 +319,45 @@ static u64 notrace arm64_858921_read_cntvct_el0(void)
 }
 #endif
 
-#ifdef CONFIG_SUN50I_A64_UNSTABLE_TIMER
+#ifdef CONFIG_SUN50I_ERRATUM_UNKNOWN1
 /*
- * The low bits of each register can transiently read as all ones or all zeroes
- * when bit 11 or greater rolls over. Since the value can jump both backward
- * (7ff -> 000 -> 800) and forward (7ff -> fff -> 800), it is simplest to just
- * ignore register values with all ones or zeros in the low bits.
+ * The low bits of the counter registers are indeterminate while bit 10 or
+ * greater is rolling over. Since the counter value can jump both backward
+ * (7ff -> 000 -> 800) and forward (7ff -> fff -> 800), ignore register values
+ * with all ones or all zeros in the low bits. Bound the loop by the maximum
+ * number of CPU cycles in 3 consecutive 24 MHz counter periods.
  */
+#define __sun50i_a64_read_reg(reg) ({					\
+	u64 _val;							\
+	int _retries = 150;						\
+									\
+	do {								\
+		_val = read_sysreg(reg);				\
+		_retries--;						\
+	} while (((_val + 1) & GENMASK(9, 0)) <= 1 && _retries);	\
+									\
+	WARN_ON_ONCE(!_retries);					\
+	_val;								\
+})
+
 static u64 notrace sun50i_a64_read_cntpct_el0(void)
 {
-	u64 val;
-
-	do {
-		val = read_sysreg(cntpct_el0);
-	} while (((val + 1) & GENMASK(10, 0)) <= 1);
-
-	return val;
+	return __sun50i_a64_read_reg(cntpct_el0);
 }
 
 static u64 notrace sun50i_a64_read_cntvct_el0(void)
 {
-	u64 val;
+	return __sun50i_a64_read_reg(cntvct_el0);
+}
 
-	do {
-		val = read_sysreg(cntvct_el0);
-	} while (((val + 1) & GENMASK(10, 0)) <= 1);
+static u32 notrace sun50i_a64_read_cntp_tval_el0(void)
+{
+	return read_sysreg(cntp_cval_el0) - sun50i_a64_read_cntpct_el0();
+}
 
-	return val;
+static u32 notrace sun50i_a64_read_cntv_tval_el0(void)
+{
+	return read_sysreg(cntv_cval_el0) - sun50i_a64_read_cntvct_el0();
 }
 #endif
 
@@ -438,13 +450,17 @@ static const struct arch_timer_erratum_workaround ool_workarounds[] = {
 		.read_cntvct_el0 = arm64_858921_read_cntvct_el0,
 	},
 #endif
-#ifdef CONFIG_SUN50I_A64_UNSTABLE_TIMER
+#ifdef CONFIG_SUN50I_ERRATUM_UNKNOWN1
 	{
 		.match_type = ate_match_dt,
-		.id = "allwinner,sun50i-a64-unstable-timer",
-		.desc = "Allwinner A64 timer instability",
+		.id = "allwinner,erratum-unknown1",
+		.desc = "Allwinner erratum UNKNOWN1",
+		.read_cntp_tval_el0 = sun50i_a64_read_cntp_tval_el0,
+		.read_cntv_tval_el0 = sun50i_a64_read_cntv_tval_el0,
 		.read_cntpct_el0 = sun50i_a64_read_cntpct_el0,
 		.read_cntvct_el0 = sun50i_a64_read_cntvct_el0,
+		.set_next_event_phys = erratum_set_next_event_tval_phys,
+		.set_next_event_virt = erratum_set_next_event_tval_virt,
 	},
 #endif
 };
