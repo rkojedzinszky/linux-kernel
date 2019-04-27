@@ -77,10 +77,12 @@
 
 		reg_dcdc2: dcdc2 {
 			regulator-name = "dcdc2";
+			regulator-ramp-delay = <1600>;
 		};
 
 		reg_dcdc3: dcdc3 {
 			regulator-name = "dcdc3";
+			regulator-ramp-delay = <1600>;
 		};
 
 		reg_dcdc4: dcdc4 {

@@ -205,7 +205,7 @@
 		 */
 		regulator-min-microvolt = <1000000>;
 		regulator-max-microvolt = <1500000>;
-		regulator-ramp-delay = <200>;
+		regulator-ramp-delay = <10000>;
 		regulator-boot-on;
 		regulator-always-on;
 	};
