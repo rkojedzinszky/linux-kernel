@@ -37,6 +37,7 @@ static struct ccu_nkmp pll_cpux_clk = {
 	.k		= _SUNXI_CCU_MULT(4, 2),
 	.m		= _SUNXI_CCU_DIV_MAX(0, 2, 1),
 	.p		= _SUNXI_CCU_DIV(16, 2),
+	.min_rate_for_nk = 200000000,
 	.max_rate_for_p	= 288000000,
 	.common		= {
 		.reg		= 0x000,
