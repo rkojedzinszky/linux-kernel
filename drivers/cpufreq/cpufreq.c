@@ -534,7 +534,8 @@ unsigned int cpufreq_policy_transition_delay_us(struct cpufreq_policy *policy)
 		 * a reasonable amount of time after which we should reevaluate
 		 * the frequency.
 		 */
-		return min(latency * LATENCY_MULTIPLIER, (unsigned int)10000);
+		//return min(latency * LATENCY_MULTIPLIER, (unsigned int)10000);
+		return latency * LATENCY_MULTIPLIER;
 	}
 
 	return LATENCY_MULTIPLIER;
