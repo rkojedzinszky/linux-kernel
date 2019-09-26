@@ -94,14 +94,14 @@ else
 	packageversion=$version-$revision
 fi
 sourcename=$KDEB_SOURCENAME
-packagename=linux-image-$version
-kernel_headers_packagename=linux-headers-$version
+packagename=linux-image-ks
+kernel_headers_packagename=linux-headers-ks
 dbg_packagename=$packagename-dbg
 debarch=
 set_debarch
 
 if [ "$ARCH" = "um" ] ; then
-	packagename=user-mode-linux-$version
+	packagename=user-mode-linux-ks
 fi
 
 email=${DEBEMAIL-$EMAIL}
