@@ -47,4 +47,15 @@
 / {
 	model = "Banana Pi BPI-M2-Plus H3";
 	compatible = "sinovoip,bpi-m2-plus", "allwinner,sun8i-h3";
+
+	cpu_power: cpu-power {
+		compatible = "regulator-fixed";
+		regulator-name = "cpu-power";
+		regulator-min-microvolt = <1400000>;
+		regulator-max-microvolt = <1400000>;
+	};
+};
+
+&cpu0 {
+	cpu-supply = <&cpu_power>;
 };
