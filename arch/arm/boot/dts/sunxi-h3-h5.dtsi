@@ -151,9 +151,15 @@
 			clock-latency-ns = <244144>; /* 8 32k periods */
 		};
 
-		opp-1368000000 {
-			opp-hz = /bits/ 64 <1368000000>;
+		opp-1392000000 {
+			opp-hz = /bits/ 64 <1392000000>;
 			opp-microvolt = <1400000 1400000 1500000>;
+			clock-latency-ns = <244144>; /* 8 32k periods */
+		};
+
+		opp-1488000000 {
+			opp-hz = /bits/ 64 <1488000000>;
+			opp-microvolt = <1500000 1500000 1500000>;
 			clock-latency-ns = <244144>; /* 8 32k periods */
 		};
 	};
